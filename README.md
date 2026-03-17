@@ -56,12 +56,9 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Set up environment variables
+### 4. Set up API
 
-Create a `.env` file in the root directory:
-```env
-SECRET_KEY=your-django-secret-key
-DEBUG=True
+```
 GEMINI_API_KEY=your-gemini-api-key
 ```
 
