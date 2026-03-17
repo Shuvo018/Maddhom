@@ -6,7 +6,7 @@ from .models import Blog, Category, Comment
 
 from google import genai
 
-GEMINI_API_KEY = "AIzaSyAvE013OreC8c2gCOVwPPJ2o_orFcJDiR4"
+GEMINI_API_KEY = "API_KEY_Here"
 # Create your views here.
 
 def posts_by_category(request, category_id):
