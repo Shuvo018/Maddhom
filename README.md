@@ -41,7 +41,7 @@ A Django-based blogging platform where people can read and write short articles 
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/shortly.git
+git clone https://github.com/Shuvo018/Maddhom.git
 cd shortly
 ```
 
