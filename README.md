@@ -92,8 +92,9 @@ Visit `http://127.0.0.1:8000` in your browser.
   <img src="github_images/article_page.png" alt="" width="800">
   <img src="github_images/article_page02.png" alt="e" width="800">
   
-  <h2>Dashboard page</h4>
+  <h2>Category page</h4>
   <img src="github_images/category_page.png" alt="" width="800">
+  <h2>Dashboard page</h4>
   <img src="github_images/dashboard_page.png" alt=" page" width="800">
   <img src="github_images/dashboard_page02.png" alt=" page" width="800">
   
