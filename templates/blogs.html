@@ -48,21 +48,59 @@
                     <p class="fs-5 mb-4">{{ single_blog.short_description}}</p>
                     <p class="fs-5 mb-4">{{ single_blog.blog_body}}</p>
 
+                    
                     <h4>Comments ({{comment_count}})</h4>
                     {% if comments %}
 
+                    <!-- Comment List -->
                     {% for comment in comments %}
 
                     <div class="card mt-1">
                         <div class="card-body">
-                            <p class="card-text  mb-0">
-                                {{comment}}
-                            </p>
                             <span>
                                 <small> By {{ comment.user }} | </small>
                                 <small>{{ comment.created_at | timesince }} ago</small>
                             </span>
+                            <p class="card-text mb-0">
+                                {{ comment }}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% if user.is_authenticated %}
+                                    <button type="button" class="btn btn-link p-0" onclick="toggleReplyForm({{ comment.id }})">Reply</button>
+                                {% else %}
+                                    <small class="text-muted">Login to reply</small>
+                                {% endif %}
+                            </div>
                         </div>
+                        <!-- Reply List -->
+                        {% if comment.child_comment.all %}
+                        <div class="card-body ps-4">
+                            {% for reply in comment.child_comment.all %}
+                            <div class="card mb-2 bg-light">
+                                <div class="card-body">
+                                    <span>
+                                        <small> By {{ reply.user }} | </small>
+                                        <small>{{ reply.created_at | timesince }} ago</small>
+                                    </span>
+                                    <p class="card-text mb-0">{{ reply }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        
+                        {% if user.is_authenticated %}
+                        <div id="reply-form-{{ comment.id }}" class="card-body ps-4" style="display:none;">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                                <div class="form-group">
+                                    <textarea name="comment" class="form-control" rows="3" placeholder="Write your reply"></textarea>
+                                    <input type="submit" value="Post reply" class="btn btn-secondary mt-2">
+                                </div>
+                            </form>
+                        </div>
+                        {% endif %}
                     </div>
 
                     {% endfor %}
@@ -77,10 +115,10 @@
                         {% if user.is_authenticated %}
                         <form action="" method="POST">
                             {% csrf_token %}
+                            <input type="hidden" name="parent_id" value="">
                             <div class="form-group">
-                                <textarea name="comment" class="form-control" rows="4"
-                                    placeholder="Write your comment"></textarea>
-                                <input type="submit" value="submit" class="btn btn-primary mt-2">
+                                <textarea name="comment" class="form-control" rows="4" placeholder="Write your comment"></textarea>
+                                <input type="submit" value="Submit" class="btn btn-primary mt-2">
                             </div>
                         </form>
                         {% else %}
@@ -136,7 +174,13 @@
             arrow.textContent = '▼';
         }
     }
+
+    function toggleReplyForm(commentId) {
+        const replyForm = document.getElementById(`reply-form-${commentId}`);
+        if (!replyForm) return;
+        replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+    }
 </script>
- 
+
 
 {% endblock %}

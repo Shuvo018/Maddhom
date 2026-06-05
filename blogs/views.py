@@ -6,7 +6,7 @@ from .models import Blog, Category, Comment
 
 from google import genai
 
-GEMINI_API_KEY = "API_KEY_Here"
+GEMINI_API_KEY = "AIzaSyAvE013OreC8c2gCOVwPPJ2o_orFcJDiR4"
 # Create your views here.
 
 def posts_by_category(request, category_id):
@@ -32,11 +32,21 @@ def blogs(request, slug):
     single_blog = get_object_or_404(Blog, slug=slug, status='Published')
     
     if request.method == 'POST':
-        comment = Comment()
-        comment.user = request.user
-        comment.blog = single_blog
-        comment.comment = request.POST['comment']
-        comment.save()
+        if request.user.is_authenticated:
+            comment_text = request.POST.get('comment', '').strip()
+            parent_id = request.POST.get('parent_id')
+            if comment_text:
+                comment = Comment()
+                comment.user = request.user
+                comment.blog = single_blog
+                comment.content = comment_text
+                if parent_id:
+                    try:
+                        parent_comment = Comment.objects.get(id=parent_id, blog=single_blog)
+                        comment.parent = parent_comment
+                    except Comment.DoesNotExist:
+                        comment.parent = None
+                comment.save()
         return HttpResponseRedirect(request.path_info)
 
     # Generate AI summary using Gemini
@@ -57,11 +67,16 @@ def blogs(request, slug):
         ai_summary = None
 
     # comments
-    comments= Comment.objects.filter(blog=single_blog)
-    comment_count = comments.count()
+    top_level_comments = (
+        Comment.objects
+        .filter(blog=single_blog, parent__isnull=True)
+        .order_by('-created_at')
+        .prefetch_related('child_comment')
+    )
+    comment_count = Comment.objects.filter(blog=single_blog).count()
     context = {
         'single_blog': single_blog,
-        'comments': comments,
+        'comments': top_level_comments,
         'comment_count': comment_count,
         'ai_summary': ai_summary,
     }
