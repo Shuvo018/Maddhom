@@ -91,7 +91,8 @@ DATABASES = {
 # If the DATABASE_URL environment variable exists (like on Vercel), use it!
 if os.environ.get('DATABASE_URL'):
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
-
+    # Explicitly force Django 6.0+ to use the modern postgresql engine wrapper
+    DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
