@@ -54,8 +54,8 @@ A Django-based blogging platform where people can read and write short articles 
 ### ER diagram
 
 <!-- <img width="1440" height="1472" alt="image" src="https://github.com/user-attachments/assets/60b47696-9011-4044-b3ad-eab8cf061323" /> -->
+  <img src="github_images/ER_diagram.jpg" alt="ER diagram" width="800">
 
-<iframe width="100%" height="500px" style="box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); border-radius:15px;" allowtransparency="true" allowfullscreen="true" scrolling="no" title="Embedded DrawSQL IFrame" frameborder="0" src="https://drawsql.app/teams/shuvo-dev/diagrams/maddhom/embed"></iframe>
 
 ---
 ## 🛠️ Tech Stack
